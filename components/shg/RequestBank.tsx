@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { YogdaanContext } from '../../utils/YogdaanContext';
 
 export default function RequestBank() {
+  const { state } = useContext(YogdaanContext);
   const [formInput, updateFormInput] = useState({
     shgid: '',
     amount: '',
     loanTime: '',
   });
 
-  const createRequestForBank = async () => {
+  const createRequestForBank = () => {
     const { shgid, amount, loanTime } = formInput;
     if (!shgid || !amount || !loanTime) return;
     const data = JSON.stringify({
@@ -16,13 +18,32 @@ export default function RequestBank() {
       loanTime,
     });
     try {
-      sendRequestToBank(data);
+      RequestBank(data);
     } catch (error) {
       console.log('Error uploading file: ', error);
     }
   };
 
-  async function sendRequestToBank(data: string) {}
+  const RequestBank = async (data: string) => {
+    console.log('requestdata:', data);
+    // sendRequestToBank
+    if (state) {
+      try {
+        await state.Contract.methods
+          .sendRequestToBank(
+            formInput.shgid,
+            formInput.amount,
+            formInput.loanTime
+          )
+          .send({
+            from: state.account,
+          });
+        alert('Congrats, your request to bank was successful');
+      } catch (err) {
+        throw err;
+      }
+    }
+  };
 
   return (
     <div className=' font-semibold text-center'>
@@ -55,7 +76,7 @@ export default function RequestBank() {
               className=' h-full bg-white text-black w-full px-4 text-gray leading-tight focus:outline-none'
               type='number'
               onChange={(e) =>
-                updateFormInput({ ...formInput, loanTime: e.target.value })
+                updateFormInput({ ...formInput, amount: e.target.value })
               }
               placeholder='5000 INR'
             />

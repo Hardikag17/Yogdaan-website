@@ -34,19 +34,22 @@ export default function Regsitration() {
     president: '',
     treasurer: '',
     name: '',
-    location: {
-      state: '',
-      district: '',
-      blockName: '',
-      panchyatName: '',
-      villageName: '',
-    },
     dateOfFormation: '',
     baseIntrest: 0,
   });
 
+  const [location, setLocation] = useState({
+    state: '',
+    district: '',
+    blockName: '',
+    panchyatName: '',
+    villageName: '',
+  });
+
   const addMember = () => {
     updateMember({ ...member, srno: members.length + 2 });
+
+    console.log('here', members.length);
 
     if (member.designation == 'TREASURER')
       updateDetails({
@@ -74,7 +77,20 @@ export default function Regsitration() {
 
     if (!state) alert('error');
 
-    console.log(state?.Contract.methods);
+    console.log(
+      'details',
+      details.users,
+      details.president,
+      details.treasurer,
+      details.name,
+      location.state,
+      location.district,
+      location.blockName,
+      location.panchyatName,
+      location.villageName,
+      details.dateOfFormation,
+      details.baseIntrest
+    );
 
     try {
       await state.Contract.methods
@@ -83,7 +99,11 @@ export default function Regsitration() {
           details.president,
           details.treasurer,
           details.name,
-          details.location,
+          location.state,
+          location.district,
+          location.blockName,
+          location.panchyatName,
+          location.villageName,
           details.dateOfFormation,
           details.baseIntrest
         )
@@ -124,9 +144,9 @@ export default function Regsitration() {
                 <input
                   className=' rounded-xl w-[500px] px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
                   onChange={(e) =>
-                    updateDetails({
-                      ...details,
-                      location: { ...location, state: e.target.value },
+                    setLocation({
+                      ...location,
+                      state: e.target.value,
                     })
                   }
                   type='text'
@@ -135,9 +155,9 @@ export default function Regsitration() {
                 <input
                   className=' rounded-xl w-[500px] px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
                   onChange={(e) =>
-                    updateDetails({
-                      ...details,
-                      location: { ...location, district: e.target.value },
+                    setLocation({
+                      ...location,
+                      district: e.target.value,
                     })
                   }
                   type='text'
@@ -146,9 +166,9 @@ export default function Regsitration() {
                 <input
                   className=' rounded-xl w-[500px] px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
                   onChange={(e) =>
-                    updateDetails({
-                      ...details,
-                      location: { ...location, block: e.target.value },
+                    setLocation({
+                      ...location,
+                      blockName: e.target.value,
                     })
                   }
                   type='text'
@@ -159,9 +179,9 @@ export default function Regsitration() {
                 <input
                   className=' rounded-xl w-[500px] px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
                   onChange={(e) =>
-                    updateDetails({
-                      ...details,
-                      location: { ...location, panchyatName: e.target.value },
+                    setLocation({
+                      ...location,
+                      panchyatName: e.target.value,
                     })
                   }
                   type='text'
@@ -172,9 +192,9 @@ export default function Regsitration() {
                 <input
                   className=' rounded-xl w-[500px] px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
                   onChange={(e) =>
-                    updateDetails({
-                      ...details,
-                      location: { ...location, villageName: e.target.value },
+                    setLocation({
+                      ...location,
+                      villageName: e.target.value,
                     })
                   }
                   type='text'

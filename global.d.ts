@@ -7,13 +7,13 @@ interface YogdaanContextInterface {
   web3: string;
   Contract: Contract;
   accountType: number;
+  id: number;
 }
 
 interface ForumMetadata {
   shgid: string;
   title: string;
   description: string;
-  imgUri: string;
   location: string;
 }
 

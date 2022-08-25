@@ -64,29 +64,41 @@ export default function Body() {
             web3: web3,
             Contract: Yogdaan,
             accountType: _accountType,
+            id: 0,
           });
 
           if (state) {
             console.log(state.account);
 
             if (_accountType == 1) {
-              var accountExists = await state.Contract.methods
+              var shgid = await state.Contract.methods
                 .addressToSHGid(state.account)
                 .call({
                   from: state.account,
                 });
 
-              console.log('account Exists:', accountExists);
+              setState({
+                ...state,
+                id: shgid,
+              });
 
-              if (accountExists != 0) router.push('/shg');
+              console.log('shg exists:', shgid);
+
+              if (shgid != 0) router.push('/shg');
               else router.push('/registration');
             } else {
-              var accountExists = await state.Contract.methods
+              var bankid = await state.Contract.methods
                 .addressToBankid(state.account)
                 .call({
                   from: state.account,
                 });
-              if (accountExists) router.push('/bank');
+
+              setState({
+                ...state,
+                id: bankid,
+              });
+
+              if (bankid) router.push('/bank');
               else alert('Kindly contact the Platform Admins');
             }
           }
@@ -124,9 +136,9 @@ export default function Body() {
         </div>
       </div>
       <div className=' w-2/3 flex flex-col justify-center items-center '>
-        <h1 className=' text-3xl font-extrabold py-2'>Discussion forum</h1>
+        {/* <h1 className=' text-3xl font-extrabold py-2'>Discussion forum</h1> */}
         <div className=' h-[500px] my-2 overflow-y-scroll snap snap-y snap-mandatory flex flex-row flex-wrap hide-scroll-bar justify-center'>
-          {forums.length > 0 ? (
+          {/* {forums.length > 0 ? (
             <div>
               {forums.map((item, index) => {
                 return <Forum key={index} data={item} />;
@@ -137,7 +149,7 @@ export default function Body() {
               <div>`Loading Forums`</div>
               <Loader />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

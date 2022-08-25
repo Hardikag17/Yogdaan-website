@@ -14,9 +14,9 @@ export default function AddToForum() {
     shgid: '',
     title: '',
     description: '',
-    imgUri: '',
     location: '',
   });
+
   async function onChange(e: any) {
     const file = e.target.files[0];
     try {
@@ -34,34 +34,34 @@ export default function AddToForum() {
   const createForum = async () => {
     console.log('button clicked');
     console.log(state.account);
-    const { shgid, title, description, imgUri, location } = formInput;
+    const { shgid, title, description, location } = formInput;
     if (!shgid || !title || !description || !fileUrl || !location) return;
+
     const data = JSON.stringify({
       shgid,
       title,
       description,
-      imgUri: fileUrl,
       location,
+      image: fileUrl,
     });
 
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       // after file is uploaded to IPFS, pass the URL to save it on Polygon
-      addService(url);
+      addService();
     } catch (error) {
       console.log('Error uploading file: ', error);
     }
   };
 
-  async function addService(url: string) {
+  async function addService() {
     try {
       await axios
         .post('/api/mongoose', {
           shgid: formInput.shgid,
           title: formInput.title,
           description: formInput.description,
-          imgUri: formInput.imgUri,
           location: formInput.location,
         })
         .then(function (response) {
@@ -71,6 +71,7 @@ export default function AddToForum() {
           console.log(error);
         });
 
+      console.log('url:', url);
       alert(
         'Congrats!! we have successfully added your service to our platform'
       );

@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { YogdaanContext } from '../../utils/YogdaanContext';
 import Loader from '../loader/Loader';
 export default function Requests() {
+  const { state } = useContext(YogdaanContext);
   const [formInput, updateFormInput] = useState<RequestMetadata[]>([]);
 
+  
   return (
     <div>
       {formInput.length > 0 ? (
