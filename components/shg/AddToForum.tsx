@@ -91,7 +91,7 @@ export default function AddToForum() {
           onChange={(e) =>
             updateFormInput({ ...formInput, title: e.target.value })
           }
-          placeholder='Eg: alex'
+          placeholder='Flag hosting ceremony'
         />
       </div>
       <br />
@@ -106,7 +106,7 @@ export default function AddToForum() {
             updateFormInput({ ...formInput, description: e.target.value })
           }
           className='rounded-l bg-white text-black w-full px-4 text-gray leading-tight focus:outline-none'
-          placeholder='Eg: alex'
+          placeholder='SHG Jai Laxmi organized a flag hosting ceremony'
         />
       </div>
       <br />
@@ -121,7 +121,7 @@ export default function AddToForum() {
           onChange={(e) =>
             updateFormInput({ ...formInput, location: e.target.value })
           }
-          placeholder='Eg: alex'
+          placeholder='Thane, Maharashtra'
         />
       </div>
       <br />

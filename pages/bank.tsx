@@ -4,6 +4,9 @@ import Requests from '../components/bank/Requests';
 import Approved from '../components/bank/Approved';
 import Details from '../components/bank/Details';
 
+import Image from 'next/image';
+import YogdaanLogo from '../assets/yogdaan_logo.jpeg';
+
 export default function Bank() {
   const [state, setState] = useState(0);
 
@@ -26,7 +29,15 @@ export default function Bank() {
     <div className=' m-5'>
       {/* Navbar */}
       <div className=' m-2 p-2 bg-whiteish shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
-        <div className=' font-bold'>Yogdaan</div>
+        <div className=' font-bold'>
+          <Image
+            className=' rounded-xl'
+            height={50}
+            width={100}
+            src={YogdaanLogo}
+            alt='Yogdaan logo'
+          />
+        </div>
         <div className=' flex flex-row space-x-6 items-center'>
           <div className=' font-bold'>
             Current balance: 5000 MATIC ~ 50,000 INR
