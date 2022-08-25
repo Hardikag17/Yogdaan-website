@@ -17,7 +17,7 @@ interface ForumMetadata {
   location: string;
 }
 
-export enum UserType {
+enum UserType {
   PRESIDENT,
   VICE_PRESIDENT,
   TREASURER,
@@ -26,13 +26,13 @@ export enum UserType {
   ADMIN,
 }
 
-export enum Gender {
+enum Gender {
   MALE,
   FEMALE,
   OTHER,
 }
 
-export enum RequestStatus {
+enum RequestStatus {
   APPROVED,
   COMPLETED,
   REJECTED,
@@ -106,5 +106,4 @@ interface MemberMetadata {
   srno: number;
   userid: string;
   designation: UserType;
-  walletAddress: string;
 }

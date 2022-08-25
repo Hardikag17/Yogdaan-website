@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Navbar from '../components/navbar/Navbar';
 import { UserType, Gender, RequestStatus } from '../utils/enums';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import { YogdaanContext } from '../utils/YogdaanContext';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Regsitration() {
+  const { state } = useContext(YogdaanContext);
   const [members, updateMembers] = useState<MemberMetadata[]>([]);
   const [member, updateMember] = useState<MemberMetadata>({
     srno: 1,
@@ -17,6 +19,8 @@ export default function Regsitration() {
     designation: UserType.NONE,
     walletAddress: '0x0',
   });
+
+  const [userIds, addUserIds] = useState<any>([]);
 
   const options = [
     UserType.MEMBER,
@@ -26,8 +30,9 @@ export default function Regsitration() {
   ];
 
   const [details, updateDetails] = useState<any>({
-    id: 0,
     users: [],
+    president: '',
+    treasurer: '',
     name: '',
     location: {
       state: '',
@@ -37,19 +42,59 @@ export default function Regsitration() {
       villageName: '',
     },
     dateOfFormation: '',
-    currentBalance: 0,
-    owedBalance: 0,
-    loansGiven: [],
-    loansTaken: [],
     baseIntrest: 0,
   });
 
   const addMember = () => {
     updateMember({ ...member, srno: members.length + 2 });
+
+    if (member.designation == 'TREASURER')
+      updateDetails({
+        ...details,
+        treasurer: member.userid,
+      });
+
+    if (member.designation == 'PRESIDENT')
+      updateDetails({
+        ...details,
+        president: member.userid,
+      });
+
+    addUserIds((userIds) => [...userIds, member.userid]);
     updateMembers((members) => [...members, member]);
+    console.log(userIds);
   };
 
-  const RegisterSHG = () => {};
+  const RegisterSHG = async () => {
+    console.log('members:', members);
+    updateDetails({
+      ...details,
+      users: userIds,
+    });
+
+    if (!state) alert('error');
+
+    console.log(state?.Contract.methods);
+
+    try {
+      await state.Contract.methods
+        .addSHG(
+          details.users,
+          details.president,
+          details.treasurer,
+          details.name,
+          details.location,
+          details.dateOfFormation,
+          details.baseIntrest
+        )
+        .send({
+          from: state.account,
+        });
+      alert('Congrats!! you have successfully added your SHG');
+    } catch (error) {
+      console.log('error:', error);
+    }
+  };
   return (
     <div className=' p-5 '>
       <Navbar />
@@ -63,7 +108,7 @@ export default function Regsitration() {
           <div className=' w-1/5'>
             <div className=' bg-white rounded-full h-[200px] w-[200px] border-2 border-solid flex flex-wrap text-center mx-auto flex-shrink-0'></div>
           </div>
-          <div className=' w-4/5'>
+          <div className=' w-4/5 bg-grey'>
             <div className=' bg-grey rounded-xl p-5 m-5 flex flex-col'>
               <div className=' flex justify-start m-1'>
                 <input
@@ -149,40 +194,78 @@ export default function Regsitration() {
                   placeholder='Date of formation'
                 />
               </div>
+              <div className=' flex justify-start m-1'>
+                <input
+                  className=' rounded-xl w-[500px] px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
+                  onChange={(e) =>
+                    updateDetails({
+                      ...details,
+                      baseIntrest: e.target.value,
+                    })
+                  }
+                  type='text'
+                  placeholder='Base interest'
+                />
+              </div>
             </div>
           </div>
           <div className=' bg-grey rounded-xl'></div>
         </div>
         <h1 className=' text-left mx-8'>Member details</h1>
-        <div className=' flex justify-center'>
-          <table className='table-auto bg-grey border-2 border-solid shadow-xl my-5 space-y-2'>
+        <div className=' flex justify-center rounded-xl shadow-xl m-1'>
+          <table className='table-auto  border-2 border-solid shadow-xl my-5'>
             <thead>
               <tr>
                 <th>SR.NO</th>
                 <th>User id</th>
                 <th>Designation</th>
-                <th>Wallet address</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              {members.length > 0 ? (
-                <div>
-                  {members.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{item.srno}</td>
-                        <td>{item.userid}</td>
-                        <td>{item.designation}</td>
-                        <td>{item.walletAddress}</td>
-                        <td>
-                          <button className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
-                            -
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </div>
+              {members && members.length > 0 ? (
+                <tr>
+                  <td>
+                    {members.map((item, index) => {
+                      return (
+                        <div className=' py-5 px-2' key={index}>
+                          <td>{item.srno}</td>
+                        </div>
+                      );
+                    })}
+                  </td>
+                  <td>
+                    {members.map((item, index) => {
+                      return (
+                        <div className=' py-5 px-2' key={index}>
+                          <td>{item.userid}</td>
+                        </div>
+                      );
+                    })}
+                  </td>
+                  <td className=' my-5'>
+                    {members.map((item, index) => {
+                      return (
+                        <div className=' py-5 px-2' key={index}>
+                          <td>{item.designation}</td>
+                        </div>
+                      );
+                    })}
+                  </td>
+                  <td>
+                    {members.map((item, index) => {
+                      return (
+                        <div className=' py-3 px-2' key={index}>
+                          <td>
+                            <button className='bg-blue hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
+                              -
+                            </button>
+                          </td>
+                        </div>
+                      );
+                    })}
+                  </td>
+                </tr>
               ) : (
                 <tr />
               )}
@@ -244,16 +327,7 @@ export default function Regsitration() {
                     </Transition>
                   </Menu>
                 </td>
-                <td>
-                  {' '}
-                  <input
-                    className=' rounded-xl px-4 text-gray leading-tight focus:outline-none border-2 border-solid border-grey shadow-xl'
-                    onChange={(e) =>
-                      updateMember({ ...member, walletAddress: e.target.value })
-                    }
-                    placeholder='Wallet address'
-                  />
-                </td>
+
                 <td>
                   <button
                     onClick={addMember}
@@ -266,7 +340,7 @@ export default function Regsitration() {
           </table>
         </div>
         <button
-          onClick={RegisterSHG()}
+          onClick={RegisterSHG}
           className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           Finish
         </button>
