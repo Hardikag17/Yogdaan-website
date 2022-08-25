@@ -7,6 +7,7 @@ import { useContext, useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Forum from './forum';
+import Loader from '../loader/Loader';
 
 export default function Body() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function Body() {
       await axios
         .get('/api/mongoose')
         .then(function (response) {
-          console.log(response);
+          console.log(response.data);
           addForums(response.data);
         })
         .catch(function (error) {
@@ -55,6 +56,8 @@ export default function Body() {
             YogdaanContractAddress
           );
 
+          console.log('Yogdaan Contract address:', YogdaanContractAddress);
+
           setState({
             account: account,
             walletConnected: true,
@@ -67,16 +70,18 @@ export default function Body() {
             console.log(state.account);
 
             if (_accountType == 1) {
-              var accountExists = await state.YogdaanContract.methods
+              var accountExists = await state.Contract.methods
                 .addressToSHGid(state.account)
                 .call({
                   from: state.account,
                 });
 
-              if (accountExists) router.push('/shgs');
+              console.log('account Exists:', accountExists);
+
+              if (accountExists != 0) router.push('/shg');
               else router.push('/registration');
             } else {
-              var accountExists = await state.YogdaanContract.methods
+              var accountExists = await state.Contract.methods
                 .addressToBankid(state.account)
                 .call({
                   from: state.account,
@@ -121,10 +126,18 @@ export default function Body() {
       <div className=' w-2/3 flex flex-col justify-center items-center '>
         <h1 className=' text-3xl font-extrabold py-2'>Discussion forum</h1>
         <div className=' h-[500px] my-2 overflow-y-scroll snap snap-y snap-mandatory flex flex-row flex-wrap hide-scroll-bar justify-center'>
-          <Forum />
-          {forums.map((item, index) => {
-            return <Forum key={index} data={item} />;
-          })}
+          {forums.length > 0 ? (
+            <div>
+              {forums.map((item, index) => {
+                return <Forum key={index} data={item} />;
+              })}
+            </div>
+          ) : (
+            <div className=' flex flex-col justify-center items-center'>
+              <div>`Loading Forums`</div>
+              <Loader />
+            </div>
+          )}
         </div>
       </div>
     </div>

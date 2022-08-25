@@ -1,5 +1,6 @@
 import YogdaanLogo from '../assets/yogdaan_logo.jpeg';
 import Image from 'next/image';
+import Link from 'next/link';
 export default function Admin() {
   return (
     <div className=' m-5'>
@@ -7,14 +8,16 @@ export default function Admin() {
       <div className=' m-2 p-2 bg-whiteish shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
         <div className=' font-extrabold text-red flex items-center'>
           {' '}
-          <Image
-            className=' rounded-xl'
-            height={50}
-            width={100}
-            src={YogdaanLogo}
-            alt='Yogdaan logo'
-          />{' '}
-          ~ Admin
+          <Link href='/'>
+            <Image
+              className=' rounded-xl cursor-pointer'
+              height={50}
+              width={100}
+              src={YogdaanLogo}
+              alt='Yogdaan logo'
+            />{' '}
+            ~ Admin
+          </Link>
         </div>
         <div className=' flex flex-row space-x-6 items-center'>
           <div className=' font-bold'>

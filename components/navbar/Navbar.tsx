@@ -1,17 +1,20 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import YogdaanLogo from '../../assets/yogdaan_logo.jpeg';
 
 export default function Navbar() {
   return (
     <div className=' m-2 p-2 bg-whiteish shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
       <div>
-        <Image
-          className=' rounded-xl'
-          height={50}
-          width={100}
-          src={YogdaanLogo}
-          alt='Yogdaan logo'
-        />
+        <Link href='/'>
+          <Image
+            className=' rounded-xl cursor-pointer'
+            height={50}
+            width={100}
+            src={YogdaanLogo}
+            alt='Yogdaan logo'
+          />
+        </Link>
       </div>
       <div className=' font-semibold'>
         If you want to access the user services please download the app by

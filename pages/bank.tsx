@@ -5,6 +5,7 @@ import Approved from '../components/bank/Approved';
 import Details from '../components/bank/Details';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import YogdaanLogo from '../assets/yogdaan_logo.jpeg';
 
 export default function Bank() {
@@ -30,13 +31,15 @@ export default function Bank() {
       {/* Navbar */}
       <div className=' m-2 p-2 bg-whiteish shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
         <div className=' font-bold'>
-          <Image
-            className=' rounded-xl'
-            height={50}
-            width={100}
-            src={YogdaanLogo}
-            alt='Yogdaan logo'
-          />
+          <Link href='/'>
+            <Image
+              className=' rounded-xl  cursor-pointer'
+              height={50}
+              width={100}
+              src={YogdaanLogo}
+              alt='Yogdaan logo'
+            />
+          </Link>
         </div>
         <div className=' flex flex-row space-x-6 items-center'>
           <div className=' font-bold'>
