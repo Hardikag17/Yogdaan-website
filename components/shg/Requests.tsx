@@ -68,11 +68,20 @@ export default function Requests() {
                     <div>loantime: {item.loanTime}</div>
                   </div>
                   <div className=' flex flex-col text-body'>
-                    <button
-                      onClick={() => ApproveRequest(item.requestId)}
-                      className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-2 lg:py-3 p-2 text-white font-semibold lg:text-2xl text-xl text-center'>
-                      Accept
-                    </button>
+                    {item.status == 0 ? (
+                      <div className='bg-green m-2 rounded-xl lg:px-2 lg:py-3 p-2 text-white font-semibold lg:text-2xl text-xl text-center'>
+                        Approved
+                      </div>
+                    ) : (
+                      <div>
+                        {' '}
+                        <button
+                          onClick={() => ApproveRequest(item.requestId)}
+                          className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-2 lg:py-3 p-2 text-white font-semibold lg:text-2xl text-xl text-center'>
+                          Accept
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

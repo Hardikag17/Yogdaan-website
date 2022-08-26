@@ -46,6 +46,7 @@ interface RequestMetadata {
   amount: number;
   description: string;
   loanTime: number;
+  status: RequestStatus;
 }
 
 interface ApprovedRequestMetadata {

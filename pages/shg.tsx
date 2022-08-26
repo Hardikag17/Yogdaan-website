@@ -88,10 +88,10 @@ export default function Shg() {
       title: 'Add To Forum',
       link: <AddToForum />,
     },
-    {
-      title: 'Approved',
-      link: <Approved />,
-    },
+    // {
+    //   title: 'Approved',
+    //   link: <Approved />,
+    // },
     {
       title: 'User Requests',
       link: <Requests />,
@@ -137,7 +137,7 @@ export default function Shg() {
       <div className=' flex justify-end'>
         <button
           onClick={() => {
-            setPage(5);
+            setPage(4);
           }}
           className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           Deposit
@@ -149,30 +149,30 @@ export default function Shg() {
           className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           Add to Forum
         </button>
-        <button
+        {/* <button
           onClick={() => {
             setPage(1);
           }}
           className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           Approved
-        </button>
+        </button> */}
         <button
           onClick={() => {
-            setPage(2);
+            setPage(1);
           }}
           className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           User Requests
         </button>
         <button
           onClick={() => {
-            setPage(3);
+            setPage(2);
           }}
           className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           Bank{' '}
         </button>
         <button
           onClick={() => {
-            setPage(4);
+            setPage(3);
           }}
           className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
           SHG details
