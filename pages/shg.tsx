@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 // File imports
 import AddToForum from '../components/shg/AddToForum';
-import Approved from '../components/shg/Approved';
+import Approved from '../components/shg/GrantLoan';
 import Details from '../components/shg/Details';
 import Requests from '../components/shg/Requests';
 import RequestBank from '../components/shg/RequestBank';

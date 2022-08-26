@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { YogdaanContext } from '../../utils/YogdaanContext';
 
 export default function RequestBank() {
@@ -8,6 +8,7 @@ export default function RequestBank() {
     amount: '',
     loanTime: '',
   });
+  const [shgRequests, updateShgRequests] = useState([]);
 
   const createRequestForBank = () => {
     const { shgid, amount, loanTime } = formInput;
@@ -44,6 +45,47 @@ export default function RequestBank() {
       }
     }
   };
+
+  const grantLoan = async () => {
+    if (state) {
+      try {
+        await state.Contract.methods.sendGrant().send({
+          from: state.account,
+        });
+        alert('You have paid the loan to user succesfully');
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const loadSHGLoans = useCallback(async () => {
+    if (state) {
+      try {
+        const Requests = await state.Contract.methods
+          .getSHGRequests(state.id)
+          .call({
+            from: state.account,
+          });
+        var tmp = [];
+        for (var i = 0; i < Requests.length; i++) {
+          const loan = await state.Contract.methods.loans(Requests[i]).call({
+            from: state.account,
+          });
+          tmp.push(loan);
+        }
+        updateShgRequests(tmp);
+
+        console.log('SHG Requests:', shgRequests);
+      } catch (err) {
+        throw err;
+      }
+    }
+  }, [state]);
+
+  useEffect(() => {
+    loadSHGLoans();
+  }, [state, loadSHGLoans]);
 
   return (
     <div className=' font-semibold text-center'>
