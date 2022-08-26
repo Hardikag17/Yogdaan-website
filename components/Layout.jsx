@@ -11,6 +11,7 @@ const Layout = ({ children }) => {
     web3: '',
     Contract: '',
     accountType: 0,
+    id: 0,
   });
 
   useEffect(() => {

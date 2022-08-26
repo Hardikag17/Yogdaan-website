@@ -41,6 +41,7 @@ enum RequestStatus {
 
 interface RequestMetadata {
   SHGId: number;
+  requestId: number;
   userId: number;
   amount: number;
   description: string;

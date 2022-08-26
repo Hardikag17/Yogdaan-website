@@ -10,8 +10,7 @@ import YogdaanLogo from '../assets/yogdaan_logo.jpeg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { YogdaanContext } from '../utils/YogdaanContext';
-import { Interface } from 'readline';
-
+import { UserType } from '../utils/enums';
 export default function Shg() {
   const [page, setPage] = useState(0);
   const { state } = useContext(YogdaanContext);
@@ -24,6 +23,7 @@ export default function Shg() {
 
   const [shg, setSHG] = useState<SHG>();
   const [members, addMembers] = useState<SHGMember[]>([]);
+  const [balance, setBalance] = useState(0);
 
   const loadMembers = useCallback(async () => {
     if (state) {
@@ -33,19 +33,25 @@ export default function Shg() {
         });
         setSHG(shg);
 
+        const shgMembers = await state.Contract.methods
+          .getSHGMembers(state.id)
+          .call({
+            from: state.account,
+          });
+
         const tmp = [];
-        for (var i = 0; i < shg.users.length; i++) {
-          var id = shg.users[i];
-          const user = await state.Contract.methods.users(id).call({
+        for (var i = 0; i < shgMembers.length; i++) {
+          const user = await state.Contract.methods.users(shgMembers[i]).call({
             from: state.account,
           });
           var member: SHGMember = {
-            userid: shg.users[i],
+            userid: shgMembers[i],
             name: user.name,
-            designation: user.designation,
+            designation: user.userType,
           };
           tmp.push(member);
         }
+        console.log('tmp:', tmp);
         addMembers(tmp);
 
         console.log('SHG Members', members);
@@ -55,9 +61,24 @@ export default function Shg() {
     }
   }, [state, members]);
 
+  const getBalance = async () => {
+    var total =
+      parseFloat(
+        await state.web3.utils.fromWei(
+          await state.web3.eth.getBalance(state?.account),
+          'ether'
+        )
+      ) * 80;
+
+    setBalance(total);
+  };
+
   useEffect(() => {
-    if (state?.account && members.length! > 0) {
+    if (state?.account && members.length < 1) {
       loadMembers();
+    }
+    if (balance == 0) {
+      getBalance();
     }
   });
 
@@ -100,12 +121,9 @@ export default function Shg() {
           </Link>
         </div>
         <div className=' flex flex-row space-x-6 items-center'>
-          <div className=' font-bold'>
-            Current balance: 5000 MATIC ~ 50,000 INR
-          </div>
+          <div className=' font-bold'>Current balance: {balance}</div>
           <div>
-            <div>userid</div>
-            <div>shg id</div>
+            <div>shgid: {state?.id}</div>
           </div>
           <div className='bg-green h-[50px] w-[50px] hover:scale-105 cursor-pointer hover:brightness-125 rounded-full'></div>
         </div>

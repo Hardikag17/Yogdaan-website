@@ -1,16 +1,58 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { YogdaanContext } from '../../utils/YogdaanContext';
 import Loader from '../loader/Loader';
 export default function Requests() {
   const { state } = useContext(YogdaanContext);
-  const [formInput, updateFormInput] = useState<RequestMetadata[]>([]);
+  const [userRequests, updateUserRequests] = useState<RequestMetadata[]>([]);
 
-  
+  const loadUserRequests = useCallback(async () => {
+    if (state) {
+      try {
+        const Requests = await state.Contract.methods
+          .userRequestsOfSHG(state.id)
+          .call({
+            from: state.account,
+          });
+        const promises = [];
+
+        for (const id of Requests) {
+          const promise = state.Contract.methods.userRequests(id).call();
+          promises.push(promise);
+        }
+        const res = await Promise.all(promises);
+        console.log('here', res);
+        updateUserRequests(res);
+      } catch (err) {
+        throw err;
+      }
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (state) {
+      loadUserRequests();
+    }
+  }, [state, loadUserRequests]);
+
+  const ApproveRequest = async (requestId: number) => {
+    if (state) {
+      try {
+        await state.Contract.methods.approveRequest(requestId, state.id).send({
+          from: state.account,
+        });
+
+        alert('Congrats, you approved the request successfully');
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   return (
     <div>
-      {formInput.length > 0 ? (
+      {userRequests.length > 0 ? (
         <div>
-          {formInput.map((item, index) => {
+          {userRequests.map((item, index) => {
             return (
               <div
                 key={index}
@@ -26,11 +68,10 @@ export default function Requests() {
                     <div>loantime: {item.loanTime}</div>
                   </div>
                   <div className=' flex flex-col text-body'>
-                    <button className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-2 lg:py-3 p-2 text-white font-semibold lg:text-2xl text-xl text-center'>
+                    <button
+                      onClick={() => ApproveRequest(item.requestId)}
+                      className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-2 lg:py-3 p-2 text-white font-semibold lg:text-2xl text-xl text-center'>
                       Accept
-                    </button>
-                    <button className='bg-red m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-2 lg:py-3 p-2 text-white font-semibold lg:text-2xl text-xl text-center'>
-                      Reject
                     </button>
                   </div>
                 </div>

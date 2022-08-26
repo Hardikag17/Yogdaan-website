@@ -86,7 +86,7 @@ export default function Body() {
 
               if (shgid != 0) router.push('/shg');
               else router.push('/registration');
-            } else {
+            } else if (_accountType == 2) {
               var bankid = await state.Contract.methods
                 .addressToBankid(state.account)
                 .call({
@@ -100,6 +100,8 @@ export default function Body() {
 
               if (bankid) router.push('/bank');
               else alert('Kindly contact the Platform Admins');
+            } else {
+              router.push('/admin');
             }
           }
         }
@@ -131,6 +133,11 @@ export default function Body() {
               onClick={() => connectToWallet(2)}
               className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-10 lg:py-2 text-white text-body text-center'>
               Bank
+            </button>
+            <button
+              onClick={() => connectToWallet(3)}
+              className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-10 lg:py-2 text-white text-body text-center'>
+              Admin
             </button>
           </div>
         </div>

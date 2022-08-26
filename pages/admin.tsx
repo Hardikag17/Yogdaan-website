@@ -4,9 +4,13 @@ import Link from 'next/link';
 import SHGs from '../components/admin/Shg';
 import Users from '../components/admin/Users';
 import Banks from '../components/admin/Bank';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { YogdaanContext } from '../utils/YogdaanContext';
 export default function Admin() {
+  const { state } = useContext(YogdaanContext);
   const [page, setPage] = useState(0);
+  const [balance, setBalance] = useState(0);
+
   const Component = [
     {
       title: 'SHGs',
@@ -21,6 +25,23 @@ export default function Admin() {
       link: <Banks />,
     },
   ];
+
+  const findBalance = async () => {
+    console.log('state', state);
+    var total =
+      parseFloat(
+        await state.web3.utils.fromWei(
+          await state.web3.eth.getBalance(state?.account),
+          'ether'
+        )
+      ) * 80;
+
+    setBalance(total);
+  };
+
+  useEffect(() => {
+    if (balance == 0) findBalance();
+  }, []);
 
   return (
     <div className=' m-5'>
@@ -40,9 +61,7 @@ export default function Admin() {
           ~ Admin
         </div>
         <div className=' flex flex-row space-x-6 items-center'>
-          <div className=' font-bold'>
-            Current balance: 5000 MATIC ~ 50,000 INR
-          </div>
+          <div className=' font-bold'>Current balance: ₹ {balance}</div>
           <div>
             <div>adminid</div>
           </div>
