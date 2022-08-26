@@ -46,7 +46,7 @@ export default function Admin() {
   return (
     <div className=' m-5'>
       {/* Navbar */}
-      <div className=' m-2 p-2 bg-whiteish shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
+      <div className=' m-2 p-2 bg-whiteish bg-opacity-25 shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
         <div className=' font-extrabold text-red flex items-center'>
           {' '}
           <Link href='/'>

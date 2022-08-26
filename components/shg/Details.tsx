@@ -21,7 +21,7 @@ export default function Details() {
 
   useEffect(() => {
     loadSHGData();
-  });
+  }, [state, loadSHGData]);
   return (
     <div className=' font-bold text-2xl'>
       {shg ? (

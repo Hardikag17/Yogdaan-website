@@ -9,11 +9,9 @@ export default function SHGs() {
   const loadAllSHGs = useCallback(async () => {
     if (state) {
       try {
-        const totalNumSHGs = await state.Contract.methods
-          .totalNumSHGs(state.id)
-          .call({
-            from: state.account,
-          });
+        const totalNumSHGs = await state.Contract.methods.totalNumSHGs().call({
+          from: state.account,
+        });
         var tmp = [];
         for (var i = 0; i < totalNumSHGs; i++) {
           const shg = await state.Contract.methods.shgs(i).call({

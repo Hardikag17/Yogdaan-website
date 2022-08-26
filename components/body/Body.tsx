@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Forum from './forum';
 import Loader from '../loader/Loader';
+import Image from 'next/image';
+import SHGLOGO from '../../assets/shg_logo.png';
 
 export default function Body() {
   const router = useRouter();
@@ -115,15 +117,16 @@ export default function Body() {
 
   return (
     <div className=' flex flex-row h-full '>
-      <div className=' w-1/3 m-auto flex flex-col justify-center'>
-        <div className=' font-extrabold text-7xl py-2 text-center mb-44'>
-          Yogdaan
+      <div className=' w-full m-auto flex flex-col justify-center py-16'>
+        <div className=' text-black font-extrabold py-8 lg:px-2 text-7xl w-full'>
+          Yogdaan ~ Let's come together!!
         </div>
+
         <div>
-          <h1 className=' text-center font-semibold'>
+          <h1 className=' text-left font-bold py-8 px-2'>
             Choose your profile type
           </h1>
-          <div className='flex flex-row justify-center items-center '>
+          <div className='flex flex-row justify-start items-center '>
             <button
               onClick={() => connectToWallet(1)}
               className='bg-blue m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-10 lg:py-2 text-white text-body text-center'>
@@ -144,7 +147,7 @@ export default function Body() {
       </div>
       <div className=' w-2/3 flex flex-col justify-center items-center '>
         {/* <h1 className=' text-3xl font-extrabold py-2'>Discussion forum</h1> */}
-        <div className=' h-[500px] my-2 overflow-y-scroll snap snap-y snap-mandatory flex flex-row flex-wrap hide-scroll-bar justify-center'>
+        <div className=' h-[300px] my-8  brightness-110 overflow-y-scroll snap snap-y snap-mandatory flex flex-row flex-wrap hide-scroll-bar justify-center'>
           {/* {forums.length > 0 ? (
             <div>
               {forums.map((item, index) => {
@@ -157,6 +160,7 @@ export default function Body() {
               <Loader />
             </div>
           )} */}
+          <Image src={SHGLOGO} width={400} height={100} alt='shg logo' />
         </div>
       </div>
     </div>

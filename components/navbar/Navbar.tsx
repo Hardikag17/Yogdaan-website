@@ -4,7 +4,7 @@ import YogdaanLogo from '../../assets/yogdaan_logo.jpeg';
 
 export default function Navbar() {
   return (
-    <div className=' m-2 p-2 bg-whiteish shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
+    <div className=' m-2 p-2 bg-whiteish bg-opacity-25 shadow-lg rounded-xl flex flex-row justify-between text-center items-center'>
       <div>
         <Link href='/'>
           <Image
