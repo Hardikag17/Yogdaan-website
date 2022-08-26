@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { YogdaanContext } from '../utils/YogdaanContext';
 import { UserType } from '../utils/enums';
+import Deposit from '../components/shg/Deposit';
 export default function Shg() {
   const [page, setPage] = useState(0);
   const { state } = useContext(YogdaanContext);
@@ -103,6 +104,10 @@ export default function Shg() {
       title: 'SHG Details',
       link: <Details />,
     },
+    {
+      title: 'Deposit',
+      link: <Deposit />,
+    },
   ];
 
   return (
@@ -130,6 +135,13 @@ export default function Shg() {
       </div>
       {/* Body */}
       <div className=' flex justify-end'>
+        <button
+          onClick={() => {
+            setPage(5);
+          }}
+          className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
+          Deposit
+        </button>
         <button
           onClick={() => {
             setPage(0);

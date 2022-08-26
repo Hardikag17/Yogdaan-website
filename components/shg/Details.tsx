@@ -31,7 +31,7 @@ export default function Details() {
             <h1>users: {shg?.users}</h1>
             <h1>name: {shg?.name}</h1>
             <h1>dateOfFormation: {shg?.dateOfFormation} </h1>
-            <h1>currentBalance: {shg?.currentBalance}</h1>
+            <h1>currentBalance: {parseFloat(shg?.currentBalance)}</h1>
             <h1>owedBalance: {shg?.owedBalance}</h1>
             <h1>baseIntrest: {shg?.baseIntrest} </h1>
           </div>
