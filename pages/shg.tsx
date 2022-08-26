@@ -19,6 +19,7 @@ export default function Shg() {
   interface SHGMember {
     userid: number;
     name: string;
+    designation: UserType;
   }
 
   const [shg, setSHG] = useState<SHG>();
@@ -32,14 +33,20 @@ export default function Shg() {
         });
         setSHG(shg);
 
+        const tmp = [];
         for (var i = 0; i < shg.users.length; i++) {
           var id = shg.users[i];
           const user = await state.Contract.methods.users(id).call({
             from: state.account,
           });
-          var member: SHGMember = { userid: shg.users[i], name: user.name };
-          addMembers((members) => [...members, member]);
+          var member: SHGMember = {
+            userid: shg.users[i],
+            name: user.name,
+            designation: user.designation,
+          };
+          tmp.push(member);
         }
+        addMembers(tmp);
 
         console.log('SHG Members', members);
       } catch (err) {
@@ -149,7 +156,7 @@ export default function Shg() {
                 return (
                   <div key={index}>
                     <div className=' m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-darkblue text-body text-center font-bold'>
-                      {item.name}
+                      {item.name} - {Object.keys(UserType)[item.designation]}
                     </div>
                     <hr />
                   </div>

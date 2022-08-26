@@ -8,9 +8,10 @@ export default function Details() {
   const loadSHGData = useCallback(async () => {
     if (state) {
       try {
-        const shg = await state.Contract.methods.shgs(state.id).call({
+        const shg = await state.Contract.methods.shgs('1').call({
           from: state.account,
         });
+        console.log(shg);
         updateSHGData(shg);
       } catch (err) {
         throw err;
@@ -19,9 +20,7 @@ export default function Details() {
   }, [state]);
 
   useEffect(() => {
-    if (shg && shg.users.length > 0) {
-      loadSHGData();
-    }
+    loadSHGData();
   });
   return (
     <div>

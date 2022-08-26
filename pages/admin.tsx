@@ -1,7 +1,27 @@
 import YogdaanLogo from '../assets/yogdaan_logo.jpeg';
 import Image from 'next/image';
 import Link from 'next/link';
+import SHGs from '../components/admin/Shg';
+import Users from '../components/admin/Users';
+import Banks from '../components/admin/Bank';
+import { useState } from 'react';
 export default function Admin() {
+  const [page, setPage] = useState(0);
+  const Component = [
+    {
+      title: 'SHGs',
+      link: <SHGs />,
+    },
+    {
+      title: 'Users',
+      link: <Users />,
+    },
+    {
+      title: 'Banks',
+      link: <Banks />,
+    },
+  ];
+
   return (
     <div className=' m-5'>
       {/* Navbar */}
@@ -15,9 +35,9 @@ export default function Admin() {
               width={100}
               src={YogdaanLogo}
               alt='Yogdaan logo'
-            />{' '}
-            ~ Admin
+            />
           </Link>
+          ~ Admin
         </div>
         <div className=' flex flex-row space-x-6 items-center'>
           <div className=' font-bold'>
@@ -44,15 +64,36 @@ export default function Admin() {
         </div>
 
         <div className=' flex justify-end'>
-          <button className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
+          <button
+            onClick={() => {
+              setPage(0);
+            }}
+            className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
             Users
           </button>
-          <button className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
+          <button
+            onClick={() => {
+              setPage(1);
+            }}
+            className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
             SHGs
           </button>
-          <button className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
+          <button
+            onClick={() => {
+              setPage(2);
+            }}
+            className='bg-green m-2 hover:scale-105 cursor-pointer hover:brightness-125 rounded-xl lg:px-4 lg:py-2 text-white text-body text-center'>
             Bank{' '}
           </button>
+        </div>
+      </div>
+      <div className=' w-full bg-grey border-2 border-solid rounded-xl'>
+        <h1 className=' text-green mx-auto font-bold text-xl p-2'>
+          {Component[page].title}
+        </h1>
+        <hr />
+        <div className=' flex flex-row justify-around mx-auto p-2'>
+          {Component[page].link}
         </div>
       </div>
     </div>

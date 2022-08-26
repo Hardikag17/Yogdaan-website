@@ -70,6 +70,7 @@ export default function Regsitration() {
 
   const RegisterSHG = async () => {
     console.log('members:', members);
+
     updateDetails({
       ...details,
       users: userIds,
@@ -79,7 +80,7 @@ export default function Regsitration() {
 
     console.log(
       'details',
-      details.users,
+      members.map((member) => member.userid),
       details.president,
       details.treasurer,
       details.name,
@@ -95,7 +96,7 @@ export default function Regsitration() {
     try {
       await state.Contract.methods
         .addSHG(
-          details.users,
+          members.map((member) => member.userid),
           details.president,
           details.treasurer,
           details.name,
